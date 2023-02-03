@@ -8,9 +8,8 @@ import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public abstract class StartProcessing implements DataProcessing{
+public abstract class StartProcessing implements DataProcessing {
 
-    // FIXME: 3.02.2023 This section is not currently in use
     protected boolean startCheck() {
         boolean sameDay = true;
         try {
@@ -19,6 +18,7 @@ public abstract class StartProcessing implements DataProcessing{
                 sameDay = true;
             } else {
                 sameDay = false;
+
                 FileWriter fr = new FileWriter(file);
                 BufferedWriter br = new BufferedWriter(fr);
                 String logHeader = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " DATE LOGS = " +
@@ -34,6 +34,18 @@ public abstract class StartProcessing implements DataProcessing{
         }
         return sameDay;
     }
+
+    public void refreshQueues(String department, String doctorId) {
+        try {
+            File file = new File(GATEWAY + "\\appointmentqueues\\" + department + "\\" + doctorId);
+            if (file.exists()) {
+                file.delete();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     @Override
     public void read() {

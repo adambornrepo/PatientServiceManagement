@@ -5,7 +5,7 @@ import business.concretes.DoctorInfoManagement;
 import business.concretes.PatientInfoManagement;
 import business.concretes.ServiceManagement;
 import core.abstracts.Colorable;
-import core.utils.NumberInput;
+import core.utilities.NumberInput;
 
 public class Runner implements Colorable {
 

@@ -1,4 +1,4 @@
-package core.utils;
+package core.utilities;
 
 
 import java.time.LocalDate;

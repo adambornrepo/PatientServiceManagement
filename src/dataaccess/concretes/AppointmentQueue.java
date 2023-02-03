@@ -1,8 +1,9 @@
 package dataaccess.concretes;
 
-import application.concretes.Runner;
+
 import core.abstracts.Colorable;
 import core.enums.Departments;
+import dataaccess.abstracts.StartProcessing;
 import entities.concretes.Appointment;
 import entities.concretes.Doctor;
 import entities.concretes.Patient;
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 
-public class AppointmentQueue implements Colorable {
+public class AppointmentQueue extends StartProcessing implements Colorable {
     LinkedList<Doctor> doctorList;
     LinkedList<Patient> patientList;
     protected HashMap<String, HashMap<String, TreeSet<Appointment>>> allDepartments;
@@ -24,23 +25,31 @@ public class AppointmentQueue implements Colorable {
         this.patientList = patientList;
         this.allDepartments = new HashMap<>();
 
+        boolean sameDay = startCheck();
+
         // FIXME: 3.02.2023 Every access means new service data
         for (int i = 0; i < Departments.size(); i++) {
             HashMap<String, TreeSet<Appointment>> department = new HashMap<>();
-            // gün farklı olunca queue lar sıfırlanmalı ada da sıfırlayan bir method yazılmalı
 
             for (Doctor doctor : doctorList) {
+
+                if (!sameDay) refreshQueues(Departments.of(i + 1).toString(), doctor.getHospitalId());
+
                 if (doctor.getSpecialty().equalsIgnoreCase(Departments.of(i + 1).toString()) && doctor.isActive()) {
 
                     TreeSet<Appointment> queue = new TreeSet<>();
                     department.put(doctor.getHospitalId(), queue);
+
                 }
             }
             allDepartments.put(Departments.of(i + 1).toString(), department);
         }
         this.ada = new AppointmentDataAccess(doctorList, patientList, allDepartments);
 
+        getQueueInfo();
+    }
 
+    public void getQueueInfo() {
         for (int i = 0; i < Departments.size(); i++) {
             ada.makeDepartment(Departments.of(i + 1));
 
@@ -55,11 +64,6 @@ public class AppointmentQueue implements Colorable {
                 }
             }
         }
-
-
-        startCheck();// yukarı alıp gun farklı olunca yapılacak işlemler için kullanılmalı
-
-
     }
 
 
@@ -97,11 +101,5 @@ public class AppointmentQueue implements Colorable {
     public void addPatientMedicalHistory(Appointment appointment) {
         ada.write(appointment);
     }
-
-    private boolean startCheck() {
-        boolean sameDate = ada.startCheck();
-        return sameDate;
-    }
-
 
 }

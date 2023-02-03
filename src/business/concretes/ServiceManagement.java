@@ -3,7 +3,7 @@ package business.concretes;
 import business.abstracts.InfoService;
 import core.abstracts.Colorable;
 import core.enums.Departments;
-import core.utils.NumberInput;
+import core.utilities.NumberInput;
 import dataaccess.concretes.DoctorDataAccess;
 import dataaccess.concretes.PatientDataAccess;
 import dataaccess.concretes.AppointmentQueue;
@@ -153,7 +153,7 @@ public class ServiceManagement implements InfoService, Colorable {
             boolean isUrgent = select == 1 ? true : false;
 
             System.out.print("\t\tWhat are the symptoms of the disease?\n\t\tDescribe : ");
-            String symptoms = inp.nextLine().toUpperCase();
+            String symptoms = inp.nextLine().trim().toUpperCase().replace(" ", "_");
             symptoms = symptoms.length() == 0 ? "NO_INFORMATION" : symptoms;
 
             Appointment appointment = new Appointment(search, department, found, isUrgent, symptoms);

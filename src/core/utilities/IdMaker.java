@@ -1,4 +1,4 @@
-package core.utils;
+package core.utilities;
 
 public class IdMaker {
     public String make(String specialty, long idNum) {

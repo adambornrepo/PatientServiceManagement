@@ -2,7 +2,7 @@ package business.concretes;
 
 import business.abstracts.InfoService;
 import core.abstracts.Colorable;
-import core.utils.NumberInput;
+import core.utilities.NumberInput;
 import dataaccess.concretes.PatientDataAccess;
 import entities.concretes.Patient;
 

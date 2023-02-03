@@ -25,30 +25,6 @@ public class AppointmentDataAccess implements DataProcessing {
         this.allDepartments = allDepartments;
     }
 
-    public boolean startCheck() {
-        boolean sameDay = true;
-        try {
-            File file = new File(GATEWAY + "\\annuallog\\" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            if (file.exists()) {
-                sameDay = true;
-            } else {
-                sameDay = false;
-                FileWriter fr = new FileWriter(file);
-                BufferedWriter br = new BufferedWriter(fr);
-                String logHeader = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " DATE LOGS = " +
-                        "DATE::HOUR::PATIENT_ID::NAME::SURNAME::BIRTHDATE::GENDER::DEPARTMENT::DOCTOR_H_ID::URGENCY::SYMPTOMS";
-                br.write(logHeader);
-                br.newLine();
-                br.flush();
-                br.close();
-                fr.close();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return sameDay;
-    }
-
     @Override
     public void read() {
         throw new IllegalDataProcessException("\t\t Data reading cannot be done from this section");
@@ -85,18 +61,20 @@ public class AppointmentDataAccess implements DataProcessing {
 
         try {
             File file = new File(GATEWAY + "\\appointmentqueues\\" + department + "\\" + doctor.getHospitalId());
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String appointment = null;
-            while ((appointment = br.readLine()) != null) {
-                String[] param = appointment.split(" ");
-                Patient found = patientList.get(patientList.indexOf(new Patient(Long.parseLong(param[0]))));
-                Appointment addQueue = new Appointment(found, department, doctor, Boolean.parseBoolean(param[2]), param[3]);
-                addQueue.setDay(param[4]+" "+param[5]);
-                queue.add(addQueue);
+            if (file.exists()) {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String appointment = null;
+                while ((appointment = br.readLine()) != null) {
+                    String[] param = appointment.split(" ");
+                    Patient found = patientList.get(patientList.indexOf(new Patient(Long.parseLong(param[0]))));
+                    Appointment addQueue = new Appointment(found, department, doctor, Boolean.parseBoolean(param[2]), param[3]);
+                    addQueue.setDay(param[4] + " " + param[5]);
+                    queue.add(addQueue);
+                }
+                br.close();
+                fr.close();
             }
-            br.close();
-            fr.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -110,7 +88,7 @@ public class AppointmentDataAccess implements DataProcessing {
             FileWriter fr = new FileWriter(file);
             BufferedWriter br = new BufferedWriter(fr);
             for (Appointment appointment : queue) {
-                String info = appointment.getPatient().getIdNum() + " " + appointment.getDepartment() + " " + appointment.isUrgent() + " " + appointment.getSymptom()+" "+appointment.getDay();
+                String info = appointment.getPatient().getIdNum() + " " + appointment.getDepartment() + " " + appointment.isUrgent() + " " + appointment.getSymptom() + " " + appointment.getDay();
                 br.write(info + "\n");
                 br.flush();
             }

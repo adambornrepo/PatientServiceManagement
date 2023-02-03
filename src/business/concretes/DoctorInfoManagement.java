@@ -3,8 +3,8 @@ package business.concretes;
 import business.abstracts.InfoService;
 import core.abstracts.Colorable;
 import core.enums.Departments;
-import core.utils.IdMaker;
-import core.utils.NumberInput;
+import core.utilities.IdMaker;
+import core.utilities.NumberInput;
 import dataaccess.concretes.DoctorDataAccess;
 import entities.concretes.Doctor;
 
