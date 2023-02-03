@@ -53,7 +53,6 @@ public class DoctorDataAccess implements DataProcessing {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
 }

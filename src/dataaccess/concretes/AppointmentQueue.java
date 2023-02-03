@@ -27,8 +27,11 @@ public class AppointmentQueue implements Colorable {
         // FIXME: 3.02.2023 Every access means new service data
         for (int i = 0; i < Departments.size(); i++) {
             HashMap<String, TreeSet<Appointment>> department = new HashMap<>();
+            // gün farklı olunca queue lar sıfırlanmalı ada da sıfırlayan bir method yazılmalı
+
             for (Doctor doctor : doctorList) {
                 if (doctor.getSpecialty().equalsIgnoreCase(Departments.of(i + 1).toString()) && doctor.isActive()) {
+
                     TreeSet<Appointment> queue = new TreeSet<>();
                     department.put(doctor.getHospitalId(), queue);
                 }
@@ -37,7 +40,24 @@ public class AppointmentQueue implements Colorable {
         }
         this.ada = new AppointmentDataAccess(doctorList, patientList, allDepartments);
 
-        startCheck();
+
+        for (int i = 0; i < Departments.size(); i++) {
+            ada.makeDepartment(Departments.of(i + 1));
+
+            for (Doctor doctor : doctorList) {
+                if (doctor.getSpecialty().equalsIgnoreCase(Departments.of(i + 1).toString()) && doctor.isActive()) {
+
+                    ada.makeDoctorFile(Departments.of(i + 1), doctor.getHospitalId());
+
+                    TreeSet<Appointment> queue = allDepartments.get(Departments.of(i + 1).toString()).get(doctor.getHospitalId());
+
+                    ada.takeAppQueueInfo(Departments.of(i + 1).toString(), doctor, queue);
+                }
+            }
+        }
+
+
+        startCheck();// yukarı alıp gun farklı olunca yapılacak işlemler için kullanılmalı
 
 
     }
@@ -46,6 +66,8 @@ public class AppointmentQueue implements Colorable {
     public void addQueue(String department, String doctorId, Appointment appointment) {
         allDepartments.get(department).get(doctorId).add(appointment);
         ada.writeDailyLog(department, doctorId, appointment);
+        TreeSet<Appointment> queue = allDepartments.get(department).get(doctorId);
+        ada.addQueue(department, doctorId, queue);
         printQueue(department, doctorId);
     }
 

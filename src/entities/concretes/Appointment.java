@@ -1,6 +1,5 @@
 package entities.concretes;
 
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +54,10 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 
     public String getDay() {
         return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 
     @Override
