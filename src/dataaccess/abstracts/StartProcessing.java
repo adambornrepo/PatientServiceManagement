@@ -10,10 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class StartProcessing implements DataProcessing{
 
-
-
-
-
+    // FIXME: 3.02.2023 This section is not currently in use
     protected boolean startCheck() {
         boolean sameDay = true;
         try {
