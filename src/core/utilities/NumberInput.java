@@ -61,7 +61,8 @@ public class NumberInput {
             boolean control3 = (odd + even + controlDigit) % 10 == lastDigit;
             boolean control4 = (odd * 8) % 10 == lastDigit;
             boolean control5 = firstDigit != 0;
-            isValid = control1 && control2 && control3 && control4 && control5;
+            boolean control6 = digit == 11;
+            isValid = control1 && control2 && control3 && control4 && control5 && control6;
             if (!isValid) System.out.println("\t\tInvalid ID Number. Try Again");
         } while (!isValid);
         return idNum;
@@ -96,8 +97,6 @@ public class NumberInput {
                 return scanDate();
             }
         } while (year);
-//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd_MM_yyyy");
-//        String result = birthday.format(dateFormat);
 
         return birthday;
     }
