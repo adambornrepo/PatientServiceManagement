@@ -74,7 +74,7 @@ public class PatientDataAccess implements DataProcessing, Colorable {
             while ((medicalHistory = br.readLine()) != null) {
                 String[] columns = medicalHistory.split(" ");
                 String color = modifier ? WHITE : YELLOW;
-                System.out.printf(color + "\t\t| %-11s %-9s %-12s %-25s %-7s %-49s|\n", columns[0], columns[1], columns[2], columns[3], columns[4], columns[5] + RESET);
+                System.out.printf("\t\t|" + color + " %-11s %-9s %-12s %-25s %-7s %-49s|\n", columns[0], columns[1], columns[2], columns[3], columns[4], columns[5] + RESET);
                 modifier ^= true;
             }
             br.close();
